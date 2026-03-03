@@ -1,15 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, Menu, X, Phone, Mail, ChevronDown } from "lucide-react";
+import { Search, Menu, X, Phone, Mail, ChevronDown, User, LogOut, LayoutDashboard, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { categories } from "@/data/courses";
+import { useAuth } from "@/contexts/AuthContext";
+import logo from "@/assets/logo.png";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCoursesOpen, setIsCoursesOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const { user, profile, signOut } = useAuth();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,9 +48,7 @@ const Header = () => {
         <div className="container flex items-center justify-between h-16 gap-4">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <div className="w-9 h-9 rounded-lg bg-gradient-primary flex items-center justify-center font-display font-bold text-accent-foreground text-sm">
-              TT
-            </div>
+            <img src={logo} alt="Top in Town" className="h-9" />
             <div className="hidden sm:block">
               <span className="font-display font-bold text-lg leading-none">Top in Town</span>
               <span className="block text-[10px] text-muted-foreground leading-none mt-0.5">TECHNOLOGY</span>
@@ -112,11 +113,32 @@ const Header = () => {
               </button>
             </form>
 
-            <Link to="/login">
-              <Button variant="outline" size="sm" className="hidden sm:inline-flex border-border/50 text-muted-foreground hover:text-foreground hover:border-primary/50">
-                Login
-              </Button>
-            </Link>
+            {user ? (
+              <div className="hidden sm:flex items-center gap-2">
+                <Link to="/dashboard">
+                  <Button variant="outline" size="sm" className="border-border/50 text-muted-foreground hover:text-foreground hover:border-primary/50">
+                    <LayoutDashboard className="h-4 w-4 mr-1.5" />
+                    Dashboard
+                  </Button>
+                </Link>
+                <Button variant="ghost" size="sm" onClick={signOut} className="text-muted-foreground hover:text-foreground">
+                  <LogOut className="h-4 w-4" />
+                </Button>
+              </div>
+            ) : (
+              <div className="hidden sm:flex items-center gap-2">
+                <Link to="/login">
+                  <Button variant="outline" size="sm" className="border-border/50 text-muted-foreground hover:text-foreground hover:border-primary/50">
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/signup">
+                  <Button size="sm" className="bg-gradient-primary text-accent-foreground">
+                    Sign Up
+                  </Button>
+                </Link>
+              </div>
+            )}
 
             <button className="lg:hidden p-2" onClick={() => setIsMenuOpen(!isMenuOpen)}>
               {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -128,31 +150,24 @@ const Header = () => {
         {isMenuOpen && (
           <div className="lg:hidden border-t border-border bg-background p-4 space-y-2">
             <form onSubmit={handleSearch} className="flex items-center relative mb-4 md:hidden">
-              <Input
-                placeholder="Search courses..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="bg-muted border-border/50 pr-9 text-sm"
-              />
-              <button type="submit" className="absolute right-3 text-muted-foreground">
-                <Search className="h-4 w-4" />
-              </button>
+              <Input placeholder="Search courses..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="bg-muted border-border/50 pr-9 text-sm" />
+              <button type="submit" className="absolute right-3 text-muted-foreground"><Search className="h-4 w-4" /></button>
             </form>
-            <Link to="/courses" className="block px-4 py-3 rounded-lg bg-primary text-primary-foreground font-medium text-sm" onClick={() => setIsMenuOpen(false)}>
-              All Courses
-            </Link>
-            <Link to="/about" className="block px-4 py-3 rounded-lg hover:bg-muted text-muted-foreground text-sm" onClick={() => setIsMenuOpen(false)}>
-              About Us
-            </Link>
-            <Link to="/learning-options" className="block px-4 py-3 rounded-lg hover:bg-muted text-muted-foreground text-sm" onClick={() => setIsMenuOpen(false)}>
-              Learning Options
-            </Link>
-            <Link to="/contact" className="block px-4 py-3 rounded-lg hover:bg-muted text-muted-foreground text-sm" onClick={() => setIsMenuOpen(false)}>
-              Contact Us
-            </Link>
-            <Link to="/login" className="block px-4 py-3 rounded-lg hover:bg-muted text-muted-foreground text-sm sm:hidden" onClick={() => setIsMenuOpen(false)}>
-              Login
-            </Link>
+            <Link to="/courses" className="block px-4 py-3 rounded-lg bg-primary text-primary-foreground font-medium text-sm" onClick={() => setIsMenuOpen(false)}>All Courses</Link>
+            <Link to="/about" className="block px-4 py-3 rounded-lg hover:bg-muted text-muted-foreground text-sm" onClick={() => setIsMenuOpen(false)}>About Us</Link>
+            <Link to="/learning-options" className="block px-4 py-3 rounded-lg hover:bg-muted text-muted-foreground text-sm" onClick={() => setIsMenuOpen(false)}>Learning Options</Link>
+            <Link to="/contact" className="block px-4 py-3 rounded-lg hover:bg-muted text-muted-foreground text-sm" onClick={() => setIsMenuOpen(false)}>Contact Us</Link>
+            {user ? (
+              <>
+                <Link to="/dashboard" className="block px-4 py-3 rounded-lg hover:bg-muted text-muted-foreground text-sm" onClick={() => setIsMenuOpen(false)}>Dashboard</Link>
+                <button onClick={() => { signOut(); setIsMenuOpen(false); }} className="w-full text-left px-4 py-3 rounded-lg hover:bg-muted text-muted-foreground text-sm">Sign Out</button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="block px-4 py-3 rounded-lg hover:bg-muted text-muted-foreground text-sm" onClick={() => setIsMenuOpen(false)}>Login</Link>
+                <Link to="/signup" className="block px-4 py-3 rounded-lg bg-primary text-primary-foreground font-medium text-sm" onClick={() => setIsMenuOpen(false)}>Sign Up</Link>
+              </>
+            )}
           </div>
         )}
       </header>
