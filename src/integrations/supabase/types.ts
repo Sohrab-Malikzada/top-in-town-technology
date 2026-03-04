@@ -563,6 +563,51 @@ export type Database = {
           },
         ]
       }
+      information_requests: {
+        Row: {
+          business_email: string
+          company: string | null
+          country: string | null
+          course_name: string | null
+          created_at: string
+          description: string | null
+          full_name: string
+          how_heard: string | null
+          id: string
+          phone: string | null
+          preferred_contact: string | null
+          request_type: string
+        }
+        Insert: {
+          business_email: string
+          company?: string | null
+          country?: string | null
+          course_name?: string | null
+          created_at?: string
+          description?: string | null
+          full_name: string
+          how_heard?: string | null
+          id?: string
+          phone?: string | null
+          preferred_contact?: string | null
+          request_type?: string
+        }
+        Update: {
+          business_email?: string
+          company?: string | null
+          country?: string | null
+          course_name?: string | null
+          created_at?: string
+          description?: string | null
+          full_name?: string
+          how_heard?: string | null
+          id?: string
+          phone?: string | null
+          preferred_contact?: string | null
+          request_type?: string
+        }
+        Relationships: []
+      }
       order_items: {
         Row: {
           course_id: string | null
