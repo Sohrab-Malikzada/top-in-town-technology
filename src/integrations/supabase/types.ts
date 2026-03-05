@@ -137,6 +137,44 @@ export type Database = {
         }
         Relationships: []
       }
+      certificate_requests: {
+        Row: {
+          admin_note: string | null
+          certificate_id: string
+          created_at: string
+          id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_note?: string | null
+          certificate_id: string
+          created_at?: string
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_note?: string | null
+          certificate_id?: string
+          created_at?: string
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "certificate_requests_certificate_id_fkey"
+            columns: ["certificate_id"]
+            isOneToOne: false
+            referencedRelation: "certificates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       certificates: {
         Row: {
           certificate_number: string
@@ -145,6 +183,7 @@ export type Database = {
           id: string
           issued_at: string
           pdf_url: string | null
+          status: string | null
           user_id: string
           verification_url: string | null
         }
@@ -155,6 +194,7 @@ export type Database = {
           id?: string
           issued_at?: string
           pdf_url?: string | null
+          status?: string | null
           user_id: string
           verification_url?: string | null
         }
@@ -165,6 +205,7 @@ export type Database = {
           id?: string
           issued_at?: string
           pdf_url?: string | null
+          status?: string | null
           user_id?: string
           verification_url?: string | null
         }
@@ -359,6 +400,7 @@ export type Database = {
       courses: {
         Row: {
           base_price: number
+          brochure_url: string | null
           category_id: string | null
           certificate_eligible: boolean | null
           created_at: string
@@ -376,6 +418,7 @@ export type Database = {
           policy_pdf_url: string | null
           prerequisites: string[] | null
           rating: number | null
+          roadmap_url: string | null
           seat_capacity: number | null
           short_description: string | null
           slug: string
@@ -386,6 +429,7 @@ export type Database = {
         }
         Insert: {
           base_price?: number
+          brochure_url?: string | null
           category_id?: string | null
           certificate_eligible?: boolean | null
           created_at?: string
@@ -403,6 +447,7 @@ export type Database = {
           policy_pdf_url?: string | null
           prerequisites?: string[] | null
           rating?: number | null
+          roadmap_url?: string | null
           seat_capacity?: number | null
           short_description?: string | null
           slug: string
@@ -413,6 +458,7 @@ export type Database = {
         }
         Update: {
           base_price?: number
+          brochure_url?: string | null
           category_id?: string | null
           certificate_eligible?: boolean | null
           created_at?: string
@@ -430,6 +476,7 @@ export type Database = {
           policy_pdf_url?: string | null
           prerequisites?: string[] | null
           rating?: number | null
+          roadmap_url?: string | null
           seat_capacity?: number | null
           short_description?: string | null
           slug?: string
