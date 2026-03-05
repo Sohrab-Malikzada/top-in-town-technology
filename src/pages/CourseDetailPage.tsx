@@ -178,12 +178,28 @@ const CourseDetailPage = () => {
 
                 {/* Downloads */}
                 <div className="mt-6 pt-6 border-t border-border/50 space-y-2">
-                  <Button variant="ghost" className="w-full justify-start text-muted-foreground text-sm h-9">
-                    <Download className="h-4 w-4 mr-2" /> Download Brochure
-                  </Button>
-                  <Button variant="ghost" className="w-full justify-start text-muted-foreground text-sm h-9">
-                    <FileText className="h-4 w-4 mr-2" /> Download Roadmap
-                  </Button>
+                  {course.brochure_url ? (
+                    <a href={course.brochure_url} target="_blank" rel="noopener noreferrer">
+                      <Button variant="ghost" className="w-full justify-start text-muted-foreground text-sm h-9">
+                        <Download className="h-4 w-4 mr-2" /> Download Brochure
+                      </Button>
+                    </a>
+                  ) : (
+                    <Button variant="ghost" className="w-full justify-start text-muted-foreground/50 text-sm h-9 cursor-not-allowed" disabled>
+                      <Download className="h-4 w-4 mr-2" /> Brochure (Coming Soon)
+                    </Button>
+                  )}
+                  {course.roadmap_url ? (
+                    <a href={course.roadmap_url} target="_blank" rel="noopener noreferrer">
+                      <Button variant="ghost" className="w-full justify-start text-muted-foreground text-sm h-9">
+                        <FileText className="h-4 w-4 mr-2" /> Download Roadmap
+                      </Button>
+                    </a>
+                  ) : (
+                    <Button variant="ghost" className="w-full justify-start text-muted-foreground/50 text-sm h-9 cursor-not-allowed" disabled>
+                      <FileText className="h-4 w-4 mr-2" /> Roadmap (Coming Soon)
+                    </Button>
+                  )}
                 </div>
               </motion.div>
             </div>

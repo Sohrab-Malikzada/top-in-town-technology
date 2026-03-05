@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Search, Menu, X, Phone, Mail, ChevronDown, LogOut, LayoutDashboard, ShoppingCart } from "lucide-react";
+import { Search, Menu, X, Phone, Mail, ChevronDown, LogOut, LayoutDashboard, ShoppingCart, Sun, Moon, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
+import { useCart } from "@/contexts/CartContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import { supabase } from "@/integrations/supabase/client";
 import logo from "@/assets/logo.png";
 
@@ -40,7 +42,9 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [dbCategories, setDbCategories] = useState<Category[]>([]);
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
+  const { user, signOut, hasRole } = useAuth();
+  const { count } = useCart();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     supabase.from("categories").select("id, name, slug").order("sort_order").then(({ data }) => {
@@ -57,11 +61,7 @@ const Header = () => {
   };
 
   const MegaDropdown = ({ id, trigger, children }: { id: string; trigger: React.ReactNode; children: React.ReactNode }) => (
-    <div
-      className="relative"
-      onMouseEnter={() => setOpenDropdown(id)}
-      onMouseLeave={() => setOpenDropdown(null)}
-    >
+    <div className="relative" onMouseEnter={() => setOpenDropdown(id)} onMouseLeave={() => setOpenDropdown(null)}>
       {trigger}
       {openDropdown === id && (
         <div className="absolute top-full left-0 mt-1 bg-card border border-border rounded-xl shadow-card p-5 z-50 min-w-[280px]">
@@ -84,9 +84,10 @@ const Header = () => {
               <Mail className="h-3.5 w-3.5" /> info@topintown.tech
             </a>
           </div>
-          <span className="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full font-medium">
-            🎓 5,000+ Courses Available
-          </span>
+          <div className="flex items-center gap-4">
+            <Link to="/verify-certificate" className="text-xs hover:text-primary transition-colors">Verify Certificate</Link>
+            <span className="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full font-medium">🎓 5,000+ Courses</span>
+          </div>
         </div>
       </div>
 
@@ -103,73 +104,81 @@ const Header = () => {
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-1">
-            {/* About */}
-            <MegaDropdown
-              id="about"
-              trigger={
-                <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-                  About <ChevronDown className="h-3.5 w-3.5" />
-                </button>
-              }
-            >
+            <MegaDropdown id="about" trigger={
+              <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                About <ChevronDown className="h-3.5 w-3.5" />
+              </button>
+            }>
               <div className="space-y-1 w-56">
-                {aboutLinks.map((link) => (
-                  <Link key={link.to} to={link.to} className="block px-3 py-2 text-sm rounded-lg hover:bg-surface-hover text-muted-foreground hover:text-foreground transition-colors" onClick={() => setOpenDropdown(null)}>
+                {aboutLinks.map(link => (
+                  <Link key={link.to} to={link.to} className="block px-3 py-2 text-sm rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors" onClick={() => setOpenDropdown(null)}>
                     {link.label}
                   </Link>
                 ))}
               </div>
             </MegaDropdown>
 
-            {/* All Courses */}
-            <MegaDropdown
-              id="courses"
-              trigger={
-                <Link to="/courses" className="flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary-hover transition-colors">
-                  All Courses <ChevronDown className="h-3.5 w-3.5" />
-                </Link>
-              }
-            >
+            <MegaDropdown id="courses" trigger={
+              <Link to="/courses" className="flex items-center gap-1 px-3 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity">
+                All Courses <ChevronDown className="h-3.5 w-3.5" />
+              </Link>
+            }>
               <div className="grid grid-cols-3 gap-1 w-[540px] max-h-[420px] overflow-y-auto">
-                {dbCategories.map((cat) => (
-                  <Link key={cat.id} to={`/courses?category=${cat.slug}`} className="px-3 py-2 text-sm rounded-lg hover:bg-surface-hover text-muted-foreground hover:text-foreground transition-colors truncate" onClick={() => setOpenDropdown(null)}>
+                {dbCategories.map(cat => (
+                  <Link key={cat.id} to={`/courses?category=${cat.slug}`} className="px-3 py-2 text-sm rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors truncate" onClick={() => setOpenDropdown(null)}>
                     {cat.name}
                   </Link>
                 ))}
               </div>
             </MegaDropdown>
 
-            {/* Learning Options */}
-            <MegaDropdown
-              id="learning"
-              trigger={
-                <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-                  Learning Options <ChevronDown className="h-3.5 w-3.5" />
-                </button>
-              }
-            >
+            <MegaDropdown id="learning" trigger={
+              <button className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                Learning Options <ChevronDown className="h-3.5 w-3.5" />
+              </button>
+            }>
               <div className="space-y-1 w-64">
-                {learningLinks.map((link) => (
-                  <Link key={link.to} to={link.to} className="block px-3 py-2 text-sm rounded-lg hover:bg-surface-hover text-muted-foreground hover:text-foreground transition-colors" onClick={() => setOpenDropdown(null)}>
+                {learningLinks.map(link => (
+                  <Link key={link.to} to={link.to} className="block px-3 py-2 text-sm rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors" onClick={() => setOpenDropdown(null)}>
                     {link.label}
                   </Link>
                 ))}
               </div>
             </MegaDropdown>
 
-            <Link to="/contact" className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Contact Us</Link>
+            <Link to="/contact" className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Contact</Link>
             <Link to="/request-info" className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">Request Info</Link>
           </nav>
 
           {/* Right side */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <form onSubmit={handleSearch} className="hidden md:flex items-center relative">
-              <Input placeholder="Search courses..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="w-48 bg-muted border-border/50 pr-9 text-sm h-9" />
+              <Input placeholder="Search courses..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-44 bg-muted border-border/50 pr-9 text-sm h-9" />
               <button type="submit" className="absolute right-2.5 text-muted-foreground hover:text-primary transition-colors"><Search className="h-4 w-4" /></button>
             </form>
 
+            {/* Theme toggle */}
+            <button onClick={toggleTheme} className="p-2 text-muted-foreground hover:text-foreground transition-colors" aria-label="Toggle theme">
+              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
+
+            {/* Cart */}
+            {user && (
+              <Link to="/cart" className="relative p-2 text-muted-foreground hover:text-foreground transition-colors">
+                <ShoppingCart className="h-5 w-5" />
+                {count > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 bg-primary text-primary-foreground text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {count}
+                  </span>
+                )}
+              </Link>
+            )}
+
             {user ? (
-              <div className="hidden sm:flex items-center gap-2">
+              <div className="hidden sm:flex items-center gap-1.5">
+                {hasRole("admin") && (
+                  <Link to="/admin"><Button variant="ghost" size="sm" className="text-primary"><Shield className="h-4 w-4" /></Button></Link>
+                )}
                 <Link to="/dashboard"><Button variant="outline" size="sm" className="border-border/50"><LayoutDashboard className="h-4 w-4 mr-1.5" />Dashboard</Button></Link>
                 <Button variant="ghost" size="sm" onClick={signOut} className="text-muted-foreground"><LogOut className="h-4 w-4" /></Button>
               </div>
@@ -190,27 +199,30 @@ const Header = () => {
         {isMenuOpen && (
           <div className="lg:hidden border-t border-border bg-background p-4 space-y-2 max-h-[80vh] overflow-y-auto">
             <form onSubmit={handleSearch} className="flex items-center relative mb-4 md:hidden">
-              <Input placeholder="Search courses..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="bg-muted border-border/50 pr-9 text-sm" />
+              <Input placeholder="Search courses..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="bg-muted border-border/50 pr-9 text-sm" />
               <button type="submit" className="absolute right-3 text-muted-foreground"><Search className="h-4 w-4" /></button>
             </form>
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 pt-2">About</p>
-            {aboutLinks.map((link) => (
+            {aboutLinks.map(link => (
               <Link key={link.to} to={link.to} className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted rounded-lg" onClick={() => setIsMenuOpen(false)}>{link.label}</Link>
             ))}
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 pt-2">Courses</p>
             <Link to="/courses" className="block px-4 py-2 text-sm text-primary font-medium hover:bg-muted rounded-lg" onClick={() => setIsMenuOpen(false)}>All Courses</Link>
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-4 pt-2">Learning Options</p>
-            {learningLinks.map((link) => (
+            {learningLinks.map(link => (
               <Link key={link.to} to={link.to} className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted rounded-lg" onClick={() => setIsMenuOpen(false)}>{link.label}</Link>
             ))}
             <div className="border-t border-border/50 pt-2 mt-2">
               <Link to="/contact" className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted rounded-lg" onClick={() => setIsMenuOpen(false)}>Contact Us</Link>
               <Link to="/request-info" className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted rounded-lg" onClick={() => setIsMenuOpen(false)}>Request Info</Link>
+              <Link to="/verify-certificate" className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted rounded-lg" onClick={() => setIsMenuOpen(false)}>Verify Certificate</Link>
             </div>
             <div className="border-t border-border/50 pt-2 mt-2">
               {user ? (
                 <>
+                  <Link to="/cart" className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted rounded-lg" onClick={() => setIsMenuOpen(false)}>Cart ({count})</Link>
                   <Link to="/dashboard" className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted rounded-lg" onClick={() => setIsMenuOpen(false)}>Dashboard</Link>
+                  {hasRole("admin") && <Link to="/admin" className="block px-4 py-2 text-sm text-primary font-medium hover:bg-muted rounded-lg" onClick={() => setIsMenuOpen(false)}>Admin Panel</Link>}
                   <button onClick={() => { signOut(); setIsMenuOpen(false); }} className="w-full text-left px-4 py-2 text-sm text-muted-foreground hover:bg-muted rounded-lg">Sign Out</button>
                 </>
               ) : (

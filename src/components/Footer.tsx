@@ -67,6 +67,7 @@ const Footer = () => {
         <div className="border-t border-border/50 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
           <p>© {new Date().getFullYear()} Top in Town Technology. All rights reserved.</p>
           <div className="flex gap-6">
+            <Link to="/verify-certificate" className="hover:text-primary transition-colors">Verify Certificate</Link>
             <Link to="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
             <Link to="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
             <Link to="/refund" className="hover:text-primary transition-colors">Refund Policy</Link>
