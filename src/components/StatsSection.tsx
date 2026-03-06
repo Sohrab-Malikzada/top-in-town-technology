@@ -35,7 +35,7 @@ const AnimatedCounter = ({ target, suffix }: { target: number; suffix: string })
   }, [target, hasAnimated]);
 
   return (
-    <div ref={ref} className="font-display text-4xl lg:text-5xl font-bold text-gradient">
+    <div ref={ref} className="font-display text-4xl lg:text-5xl font-bold text-primary">
       {count.toLocaleString()}{suffix}
     </div>
   );
@@ -43,23 +43,8 @@ const AnimatedCounter = ({ target, suffix }: { target: number; suffix: string })
 
 const StatsSection = () => {
   return (
-    <section className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(141,73%,42%,0.08),transparent_70%)]" />
-      <div className="container relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-14"
-        >
-          <h2 className="font-display text-3xl lg:text-4xl font-bold mb-4">
-            Trusted by Professionals <span className="text-gradient">Worldwide</span>
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
-            Join a global community of learners who have transformed their careers with our industry-leading training programs.
-          </p>
-        </motion.div>
-
+    <section className="py-16 bg-surface">
+      <div className="container">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
           {stats.map((stat, i) => (
             <motion.div
@@ -71,7 +56,7 @@ const StatsSection = () => {
               className="text-center"
             >
               <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-              <p className="text-sm text-muted-foreground mt-2">{stat.label}</p>
+              <p className="text-sm text-muted-foreground mt-2 font-medium">{stat.label}</p>
             </motion.div>
           ))}
         </div>

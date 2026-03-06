@@ -51,16 +51,16 @@ const FeaturedCourses = () => {
     : courses.filter((c) => c.categories?.name === activeTab);
 
   return (
-    <section className="py-20">
+    <section className="py-20 bg-surface">
       <div className="container">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
-          <h2 className="font-display text-3xl lg:text-4xl font-bold mb-4">Explore Our <span className="text-gradient">Courses</span></h2>
+          <h2 className="font-display text-3xl lg:text-4xl font-bold mb-4 text-foreground">Explore Our <span className="text-primary">Courses</span></h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">Industry-leading certification training delivered by expert instructors with hands-on labs and guaranteed results.</p>
         </motion.div>
 
         <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
           {tabs.map((tab) => (
-            <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab ? "bg-primary text-primary-foreground shadow-glow" : "bg-secondary/50 text-muted-foreground hover:text-foreground hover:bg-secondary"}`}>{tab}</button>
+            <button key={tab} onClick={() => setActiveTab(tab)} className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${activeTab === tab ? "bg-primary text-primary-foreground shadow-glow" : "bg-card text-muted-foreground border border-border hover:text-foreground hover:border-primary/30"}`}>{tab}</button>
           ))}
         </div>
 
@@ -72,8 +72,8 @@ const FeaturedCourses = () => {
           ))}
         </div>
 
-        <div className="text-center mt-10">
-          <Link to="/courses" className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-xl font-medium hover:bg-primary-hover transition-colors">
+        <div className="text-center mt-12">
+          <Link to="/courses" className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-7 py-3 rounded-full font-semibold hover:bg-primary-hover transition-colors shadow-glow">
             View All Courses <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
