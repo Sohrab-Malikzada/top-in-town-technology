@@ -4,7 +4,7 @@ import logo from "@/assets/logo.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-muted/30 border-t border-border/50 pt-16 pb-8">
+    <footer className="bg-card border-t border-border pt-16 pb-8">
       <div className="container">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
           {/* Brand */}
@@ -12,7 +12,7 @@ const Footer = () => {
             <Link to="/" className="flex items-center gap-2 mb-4">
               <img src={logo} alt="Top in Town" className="h-9" />
               <div>
-                <span className="font-display font-bold text-lg leading-none">Top in Town</span>
+                <span className="font-display font-bold text-lg leading-none text-foreground">Top in Town</span>
                 <span className="block text-[10px] text-muted-foreground leading-none mt-0.5">TECHNOLOGY</span>
               </div>
             </Link>
@@ -28,7 +28,7 @@ const Footer = () => {
 
           {/* Company */}
           <div>
-            <h4 className="font-display font-semibold mb-4">Company</h4>
+            <h4 className="font-display font-semibold mb-4 text-foreground">Company</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
               <li><Link to="/about" className="hover:text-primary transition-colors">About Us</Link></li>
               <li><Link to="/about#leadership" className="hover:text-primary transition-colors">Leadership</Link></li>
@@ -42,7 +42,7 @@ const Footer = () => {
 
           {/* Learning Options */}
           <div>
-            <h4 className="font-display font-semibold mb-4">Learning Options</h4>
+            <h4 className="font-display font-semibold mb-4 text-foreground">Learning Options</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
               <li><Link to="/learning-options#live-online" className="hover:text-primary transition-colors">Instructor-Led Online</Link></li>
               <li><Link to="/learning-options#classroom" className="hover:text-primary transition-colors">Classroom Training</Link></li>
@@ -55,7 +55,7 @@ const Footer = () => {
 
           {/* Popular */}
           <div>
-            <h4 className="font-display font-semibold mb-4">Popular Courses</h4>
+            <h4 className="font-display font-semibold mb-4 text-foreground">Popular Courses</h4>
             <ul className="space-y-2.5 text-sm text-muted-foreground">
               {["Microsoft", "AWS", "Cisco", "Cybersecurity", "Cloud Computing", "Data Science & AI", "DevOps", "Project Management"].map((cat) => (
                 <li key={cat}><Link to={`/courses?category=${cat.toLowerCase().replace(/\s+&\s+/g, "-").replace(/\s+/g, "-")}`} className="hover:text-primary transition-colors">{cat}</Link></li>
@@ -64,7 +64,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-border/50 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
+        <div className="border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
           <p>© {new Date().getFullYear()} Top in Town Technology. All rights reserved.</p>
           <div className="flex gap-6">
             <Link to="/verify-certificate" className="hover:text-primary transition-colors">Verify Certificate</Link>

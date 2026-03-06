@@ -4,7 +4,7 @@ import { testimonials } from "@/data/courses";
 
 const TestimonialsSection = () => {
   return (
-    <section className="py-20 bg-muted/20">
+    <section className="py-20 bg-surface">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -12,8 +12,8 @@ const TestimonialsSection = () => {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="font-display text-3xl lg:text-4xl font-bold mb-4">
-            What Our <span className="text-gradient">Learners Say</span>
+          <h2 className="font-display text-3xl lg:text-4xl font-bold mb-4 text-foreground">
+            What Our <span className="text-primary">Learners Say</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
             Real feedback from professionals who transformed their careers with our training programs.
@@ -28,9 +28,9 @@ const TestimonialsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="bg-card border border-border/50 rounded-xl p-6 relative"
+              className="bg-card border border-border rounded-xl p-6 relative shadow-card hover:shadow-card-hover transition-shadow"
             >
-              <Quote className="h-8 w-8 text-primary/20 absolute top-4 right-4" />
+              <Quote className="h-8 w-8 text-primary/15 absolute top-4 right-4" />
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: t.rating }).map((_, j) => (
                   <Star key={j} className="h-4 w-4 text-yellow-500 fill-yellow-500" />
@@ -38,11 +38,11 @@ const TestimonialsSection = () => {
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed mb-6">"{t.content}"</p>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-sm font-semibold text-primary">
+                <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-sm font-semibold text-primary">
                   {t.avatar}
                 </div>
                 <div>
-                  <p className="font-medium text-sm">{t.name}</p>
+                  <p className="font-semibold text-sm text-card-foreground">{t.name}</p>
                   <p className="text-xs text-muted-foreground">{t.role}</p>
                 </div>
               </div>
